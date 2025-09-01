@@ -11,5 +11,11 @@ export default defineConfig({
       origin: '*',
     },
   },
+  dev: {
+    lazyCompilation: {
+      entries: false,
+      imports: false,
+    },
+  },
   plugins: [pluginReact(), pluginModuleFederation(moduleFederationConfig)],
 });
