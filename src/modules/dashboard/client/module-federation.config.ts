@@ -15,5 +15,6 @@ export default createModuleFederationConfig({
     react: { singleton: true },
     'react-dom': { singleton: true },
     'react-router': { singleton: true },
+    '@repo/router-types': { singleton: true },
   },
 });

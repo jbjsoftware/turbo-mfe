@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@repo/ui/components/ui/tabs';
 import { Outlet, useNavigate } from 'react-router';
 
@@ -10,7 +11,7 @@ const Layout = () => {
 
   return (
     <div>
-      <header className="flex justify-between items-center">
+      <header className="flex flex-col gap-3 p-2">
         <h1>Dashboard Layout</h1>
 
         <Tabs defaultValue="one" onValueChange={handleTabChange}>
@@ -22,7 +23,9 @@ const Layout = () => {
       </header>
 
       <div className="flex flex-col h-full">
-        <Outlet />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );

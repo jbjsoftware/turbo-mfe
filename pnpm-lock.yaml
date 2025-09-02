@@ -29,6 +29,9 @@ importers:
       '@module-federation/enhanced':
         specifier: ^0.18.3
         version: 0.18.3(@rspack/core@1.5.1(@swc/helpers@0.5.17))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)(webpack@5.101.3)
+      '@repo/router-types':
+        specifier: workspace:*
+        version: link:../../packages/router-types
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -160,6 +163,9 @@ importers:
 
   src/modules/dashboard/client:
     dependencies:
+      '@repo/router-types':
+        specifier: workspace:*
+        version: link:../../../packages/router-types
       '@repo/ui':
         specifier: workspace:*
         version: link:../../../packages/ui
@@ -321,6 +327,22 @@ importers:
       typescript-eslint:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2)
+
+  src/packages/router-types:
+    dependencies:
+      react:
+        specifier: ^19.1.1
+        version: 19.1.1
+      react-router:
+        specifier: ^7.8.2
+        version: 7.8.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
   src/packages/typescript-config: {}
 

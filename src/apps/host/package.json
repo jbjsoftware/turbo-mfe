@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3",
+    "@repo/router-types": "workspace:*",
     "@repo/ui": "workspace:*",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",

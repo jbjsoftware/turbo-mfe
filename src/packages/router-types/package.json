@@ -1,0 +1,18 @@
+{
+    "name": "@repo/router-types",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",    
+    "devDependencies": {
+      "@repo/typescript-config": "workspace:*",
+      "typescript": "5.9.2"
+    },
+    "dependencies": {
+      "react-router": "^7.8.2",
+      "react": "^19.1.1"
+    },
+    "exports": {
+      "./types": "./src/types.ts",
+      "./contracts": "./src/contracts.ts"
+    }
+  }

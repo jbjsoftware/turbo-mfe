@@ -8,41 +8,19 @@ import {
   registerRemotes,
 } from '@module-federation/enhanced/runtime';
 
-import RootLayout from './root-layout'; // your host shell
+import RootLayout from './root-layout';
 
-type Remote = {
-  name: string; // mf scope
-  entry: string; // URL to mf-manifest.json
-  expose?: string; // default "./routes"
-  basePath: string; // e.g. "/dashboard"
-  meta?: unknown;
-};
-
-type RemoteRouteModule = {
-  Component?: React.ComponentType;
-  HydrateFallback?: React.ComponentType;
-  ErrorBoundary?: React.ComponentType;
-  loader?: any;
-  action?: any;
-  shouldRevalidate?: any;
-  headers?: any;
-};
-
-type RemoteModuleExports = {
-  createRemoteRouteModule: (opts: {
-    basePath: string;
-    meta?: unknown;
-  }) => Promise<RemoteRouteModule>;
-};
+import type {
+  RemoteManifestItem,
+  RemoteModuleExports,
+} from '@repo/router-types/types';
 
 export async function startRouter() {
-  const manifest: Remote[] = await (
+  const manifest: RemoteManifestItem[] = await (
     await fetch('/remote-manifest.json')
   ).json();
 
-  await registerRemotes(
-    manifest.map((m) => ({ name: m.name, entry: m.entry })),
-  );
+  registerRemotes(manifest.map((m) => ({ name: m.name, entry: m.entry })));
 
   const routes: RouteObject[] = manifest.map((m): RouteObject => {
     const base = m.basePath.replace(/\/$/, '');
