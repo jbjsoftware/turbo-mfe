@@ -4,7 +4,7 @@ export default createModuleFederationConfig({
   name: 'dashboard',
   filename: 'remoteEntry.js',
   exposes: {
-    './routes': './src/routes/route-definitions.tsx',
+    './app': './src/routes/routes.tsx',
   },
   dts: {
     generateTypes: process.env.NODE_ENV === 'production', // off in dev
@@ -16,5 +16,6 @@ export default createModuleFederationConfig({
     'react-dom': { singleton: true },
     'react-router': { singleton: true },
     '@repo/router-types': { singleton: true },
+    '@repo/ui': { singleton: true },
   },
 });

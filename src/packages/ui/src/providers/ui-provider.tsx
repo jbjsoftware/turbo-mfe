@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import "@repo/ui/globals.css";
+import '../styles/globals.css';
 
-type Theme = "dark" | "light" | "system";
+type Theme = 'dark' | 'light' | 'system';
 
 type UIProviderProps = {
   children: React.ReactNode;
@@ -16,32 +16,22 @@ type UIProviderState = {
 };
 
 const initialState: UIProviderState = {
-  theme: "system",
+  theme: 'system',
   setTheme: () => null,
 };
 
 const UIProviderContext = createContext<UIProviderState>(initialState);
 
-export function UIProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "vite-ui-theme",
-  ...props
-}: UIProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+export function UIProvider({ children, defaultTheme = 'system', storageKey = 'vite-ui-theme', ...props }: UIProviderProps) {
+  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
 
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove("light", "dark");
+    root.classList.remove('light', 'dark');
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
       root.classList.add(systemTheme);
       return;
@@ -68,8 +58,7 @@ export function UIProvider({
 export const useTheme = () => {
   const context = useContext(UIProviderContext);
 
-  if (context === undefined)
-    throw new Error("useTheme must be used within a UIProvider");
+  if (context === undefined) throw new Error('useTheme must be used within a UIProvider');
 
   return context;
 };

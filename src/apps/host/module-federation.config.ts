@@ -11,5 +11,6 @@ export default createModuleFederationConfig({
     react: { singleton: true },
     'react-dom': { singleton: true },
     'react-router': { singleton: true },
+    '@repo/ui': { singleton: true },
   },
 });

@@ -1,4 +1,4 @@
-import type { RouteObject } from "react-router";
+import type { RouteObject } from 'react-router';
 
 // Remote manifest types (extend your existing)
 export interface RemoteManifestItem {
@@ -10,23 +10,16 @@ export interface RemoteManifestItem {
   meta?: Record<string, unknown>;
 }
 
-// Shared route module contract
-export interface RemoteRouteModule {
-  Component?: React.ComponentType;
-  HydrateFallback?: React.ComponentType;
-  ErrorBoundary?: React.ComponentType;
-  loader?: any;
-  action?: any;
-  shouldRevalidate?: any;
-  headers?: any;
-}
-
-// Module Federation exports contract
+// Module Federation exports contract - remotes export RouteObject arrays
 export interface RemoteModuleExports {
-  createRemoteRouteModule: (opts: {
-    basePath: string;
-    meta?: unknown;
-  }) => Promise<RemoteRouteModule>;
+  // Default export should be RouteObject[]
+  default?: RouteObject[];
+
+  // Named route exports (common patterns but not limited to these)
+  routes?: RouteObject[];
+
+  // Allow any named route exports discovered at runtime
+  [routeName: string]: RouteObject[] | React.ComponentType | undefined;
 }
 
 // Router configuration types
@@ -39,7 +32,7 @@ export interface HostRouterConfig {
 export interface NavigationState {
   location?: string;
   formData?: FormData;
-  state: "idle" | "loading" | "submitting";
+  state: 'idle' | 'loading' | 'submitting';
 }
 
 // Route params base interface that remotes can extend

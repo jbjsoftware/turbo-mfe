@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  type LazyRouteFunction,
-  type RouteObject,
-} from 'react-router';
+import { createBrowserRouter, type RouteObject } from 'react-router';
 import {
   loadRemote,
   registerRemotes,
@@ -22,36 +18,66 @@ export async function startRouter() {
 
   registerRemotes(manifest.map((m) => ({ name: m.name, entry: m.entry })));
 
-  const routes: RouteObject[] = manifest.map((m): RouteObject => {
+  // Load all remote routes and merge them into the main router
+  const remoteRoutes: RouteObject[] = [];
+
+  for (const m of manifest) {
     const base = m.basePath.replace(/\/$/, '');
-    const exposed = (m.expose ?? './routes').replace(/^\.?\//, '');
+    const exposed = (m.expose ?? './app').replace(/^\.?\//, '');
     const id = `${m.name}/${exposed}`;
 
-    const lazy: LazyRouteFunction<RouteObject> = async () => {
+    try {
       const mod = await loadRemote<RemoteModuleExports>(id);
 
-      const routeModule = (await mod?.createRemoteRouteModule({
-        basePath: m.basePath,
-        meta: m.meta,
-      })) ?? {
-        Component: () => <div>Remote mounted but returned nothing.</div>,
-      };
+      if (!mod) {
+        console.error(`Remote ${m.name} returned null`);
+        continue;
+      }
 
-      return routeModule;
-    };
+      // Look for route configuration exports
+      const routesKey = Object.keys(mod).find(
+        (key) =>
+          key.includes('routes') || key.includes('Routes') || key === 'default',
+      );
 
-    return {
-      path: `${base}/*`,
-      lazy,
-    };
-  });
+      if (!routesKey || !mod[routesKey]) {
+        console.error(`No routes found in remote ${m.name}`);
+        continue;
+      }
+
+      const routes = mod[routesKey];
+
+      if (Array.isArray(routes) && routes.length > 0) {
+        // Merge the remote routes under the base path
+        const mainRoute = routes[0];
+        if (mainRoute && mainRoute.children) {
+          // Create a proper nested route structure
+          remoteRoutes.push({
+            path: base, // Remove the /* wildcard
+            element: mainRoute.element,
+            errorElement: mainRoute.errorElement,
+            loader: mainRoute.loader,
+            action: mainRoute.action,
+            children: mainRoute.children, // Preserve the nested structure
+          });
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to load remote ${m.name}:`, error);
+      // Add fallback route for failed remote
+      remoteRoutes.push({
+        path: `${base}/*`,
+        element: <div>Failed to load {m.name} remote.</div>,
+      });
+    }
+  }
 
   const router = createBrowserRouter([
     {
       path: '/',
       element: <RootLayout />,
       errorElement: <div>Something went wrong</div>,
-      children: routes,
+      children: remoteRoutes,
     },
   ]);
 

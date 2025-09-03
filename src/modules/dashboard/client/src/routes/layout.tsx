@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@repo/ui/components/ui/tabs';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useNavigate, useLocation } from 'react-router';
 
 const Layout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleTabChange = (value: string) => {
-    navigate(`${value}`, { relative: 'path' });
+    // Use relative navigation - React Router will handle the context correctly
+    navigate(value);
   };
 
   return (

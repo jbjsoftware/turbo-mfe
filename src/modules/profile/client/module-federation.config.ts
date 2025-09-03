@@ -9,5 +9,6 @@ export default createModuleFederationConfig({
   shared: {
     react: { singleton: true },
     'react-dom': { singleton: true },
+    '@repo/ui': { singleton: true },
   },
 });
