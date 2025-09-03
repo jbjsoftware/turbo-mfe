@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@tanstack/react-router": "^1.131.32",
+    "@tanstack/virtual-file-routes": "^1.131.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -23,6 +25,7 @@
     "@rsbuild/core": "^1.5.0",
     "@rsbuild/plugin-react": "^1.4.0",
     "@rspack/core": "^1.5.1",
+    "@tanstack/router-plugin": "^1.131.32",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.32.0",
