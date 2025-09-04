@@ -3,7 +3,7 @@ import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin'
 export default createModuleFederationConfig({
   name: 'dashboard',
   exposes: {
-    './App': './src/routeTree.gen',
+    './routes': './src/remote-routes',
   },
   filename: 'remoteEntry.js',
   dts: {

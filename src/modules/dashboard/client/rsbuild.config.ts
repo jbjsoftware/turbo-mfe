@@ -12,10 +12,7 @@ export default defineConfig({
       origin: '*',
     },
   },
-  plugins: [
-    pluginReact(),
-    // pluginModuleFederation(moduleFederationConfig)
-  ],
+  plugins: [pluginReact(), pluginModuleFederation(moduleFederationConfig)],
   tools: {
     rspack: {
       plugins: [

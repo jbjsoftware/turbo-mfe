@@ -3,6 +3,6 @@
       "name": "dashboard",
       "entry": "http://localhost:3001/mf-manifest.json",
       "basePath": "/dashboard",
-      "expose": "./app"
+      "expose": "./routes"
     }
   ]

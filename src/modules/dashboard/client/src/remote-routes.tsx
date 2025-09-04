@@ -1,2 +1,4 @@
 // Export the route tree for micro-frontend integration
-export { routeTree } from './routeTree.gen';
+import { routeTree } from './routeTree.gen';
+
+export const routes = routeTree.children;
