@@ -13,6 +13,7 @@
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3",
     "@repo/ui": "workspace:*",
+    "@repo/remote-utils": "workspace:*",
     "@tanstack/react-router": "^1.131.32",
     "@tanstack/react-router-devtools": "^1.131.32",
     "@tanstack/virtual-file-routes": "^1.131.2",

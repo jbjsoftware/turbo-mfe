@@ -8,42 +8,42 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/layout'
-import { Route as fooRouteImport } from './routes/foo'
-import { Route as barRouteImport } from './routes/bar'
-import { Route as defaultRouteImport } from './routes/default'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as FooRouteImport } from './routes/foo'
+import { Route as BarRouteImport } from './routes/bar'
+import { Route as IndexRouteImport } from './routes/index'
 
-const fooRoute = fooRouteImport.update({
+const FooRoute = FooRouteImport.update({
   id: '/foo',
   path: '/foo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const barRoute = barRouteImport.update({
+const BarRoute = BarRouteImport.update({
   id: '/bar',
   path: '/bar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const defaultRoute = defaultRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof defaultRoute
-  '/bar': typeof barRoute
-  '/foo': typeof fooRoute
+  '/': typeof IndexRoute
+  '/bar': typeof BarRoute
+  '/foo': typeof FooRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof defaultRoute
-  '/bar': typeof barRoute
-  '/foo': typeof fooRoute
+  '/': typeof IndexRoute
+  '/bar': typeof BarRoute
+  '/foo': typeof FooRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof defaultRoute
-  '/bar': typeof barRoute
-  '/foo': typeof fooRoute
+  '/': typeof IndexRoute
+  '/bar': typeof BarRoute
+  '/foo': typeof FooRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -54,9 +54,9 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  defaultRoute: typeof defaultRoute
-  barRoute: typeof barRoute
-  fooRoute: typeof fooRoute
+  IndexRoute: typeof IndexRoute
+  BarRoute: typeof BarRoute
+  FooRoute: typeof FooRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,30 +65,30 @@ declare module '@tanstack/react-router' {
       id: '/foo'
       path: '/foo'
       fullPath: '/foo'
-      preLoaderRoute: typeof fooRouteImport
+      preLoaderRoute: typeof FooRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bar': {
       id: '/bar'
       path: '/bar'
       fullPath: '/bar'
-      preLoaderRoute: typeof barRouteImport
+      preLoaderRoute: typeof BarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof defaultRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  defaultRoute: defaultRoute,
-  barRoute: barRoute,
-  fooRoute: fooRoute,
+  IndexRoute: IndexRoute,
+  BarRoute: BarRoute,
+  FooRoute: FooRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

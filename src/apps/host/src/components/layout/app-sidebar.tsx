@@ -1,7 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { HomeIcon, LineChartIcon, RabbitIcon } from 'lucide-react';
+import {
+  HomeIcon,
+  LayoutDashboardIcon,
+  LineChartIcon,
+  RabbitIcon,
+} from 'lucide-react';
 import { Link, useLocation } from '@tanstack/react-router';
 
 import {
@@ -27,6 +32,11 @@ const data = {
       title: 'About',
       url: '/about',
       icon: LineChartIcon,
+    },
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: LayoutDashboardIcon,
     },
   ],
 };

@@ -18,8 +18,7 @@ export default defineConfig({
       plugins: [
         tanstackRouter({
           target: 'react',
-          // autoCodeSplitting: true,
-          virtualRouteConfig: './src/routes.ts',
+          autoCodeSplitting: true,
         }),
       ],
     },

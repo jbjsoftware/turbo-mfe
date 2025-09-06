@@ -1,0 +1,18 @@
+{
+  "name": "@repo/remote-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.131.35"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

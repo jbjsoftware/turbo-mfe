@@ -15,8 +15,8 @@ function Layout() {
   const navigate = useNavigate();
 
   const handleTabChange = (value: string) => {
-    // Use relative navigation - React Router will handle the context correctly
-    navigate({ to: `/${value}` });
+    // Use relative navigation - should work within the current route context
+    navigate({ to: `${value}` });
   };
 
   return (
@@ -26,10 +26,14 @@ function Layout() {
           <Link to="/">Dashboard Layout</Link>
         </h1>
 
-        <Tabs defaultValue="foo" onValueChange={handleTabChange}>
+        <Tabs defaultValue="foo">
           <TabsList>
-            <TabsTrigger value="foo">Foo</TabsTrigger>
-            <TabsTrigger value="bar">Bar</TabsTrigger>
+            <TabsTrigger value="foo">
+              <Link to="/foo">Foo</Link>
+            </TabsTrigger>
+            <TabsTrigger value="bar">
+              <Link to="/bar">Bar</Link>
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </header>

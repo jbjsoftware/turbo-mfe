@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@repo/remote-utils": "workspace:*",
     "@tanstack/react-router": "^1.131.32",
     "@tanstack/virtual-file-routes": "^1.131.2",
     "react": "^19.1.1",
