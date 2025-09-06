@@ -2,8 +2,8 @@ import React from 'react';
 import { RouterProvider } from 'react-router';
 import { createRoot } from 'react-dom/client';
 
-import { UIProvider } from '@repo/ui/providers/ui-provider';
 import { startRouter } from './routes/router';
+import RootProvider from './providers/root-provider';
 
 (async () => {
   const root = createRoot(document.getElementById('root')!);
@@ -13,9 +13,9 @@ import { startRouter } from './routes/router';
 
     root.render(
       <React.StrictMode>
-        <UIProvider>
+        <RootProvider>
           <RouterProvider router={router} />
-        </UIProvider>
+        </RootProvider>
       </React.StrictMode>,
     );
   } catch (e) {

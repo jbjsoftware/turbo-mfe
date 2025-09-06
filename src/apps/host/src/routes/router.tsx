@@ -10,6 +10,7 @@ import type {
   RemoteManifestItem,
   RemoteModuleExports,
 } from '@repo/router-types/types';
+import Home from '@/pages/home/home';
 
 export async function startRouter() {
   const manifest: RemoteManifestItem[] = await (
@@ -77,7 +78,13 @@ export async function startRouter() {
       path: '/',
       element: <RootLayout />,
       errorElement: <div>Something went wrong</div>,
-      children: remoteRoutes,
+      children: [
+        {
+          path: '/',
+          element: <Home />,
+        },
+        ...remoteRoutes,
+      ],
     },
   ]);
 

@@ -1,18 +1,19 @@
-import { Link, Outlet } from 'react-router';
+import { AppSidebar } from '@/components/layout/app-sidebar';
+import { SidebarInset } from '@repo/ui/components/ui/sidebar';
+import { Suspense } from 'react';
+import { Outlet } from 'react-router';
 
 const RootLayout = () => {
   return (
-    <div>
-      <div className="text-2xl font-bold bg-blue-500 text-white p-4">
-        <Link to="/">Host App</Link>
-      </div>
-
-      <nav>
-        <Link to="/about">About</Link>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/profile">Profile</Link>
-      </nav>
-      <Outlet />
+    <div className="flex flex-row h-screen w-full">
+      <AppSidebar />
+      <SidebarInset>
+        <main className="flex flex-col flex-1">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+          </Suspense>
+        </main>
+      </SidebarInset>
     </div>
   );
 };
