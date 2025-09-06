@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 
 export const Route = createRootRoute({
   component: RootComponent,
+  notFoundComponent: () => <div>Page Not Found</div>,
 });
 
 function RootComponent() {

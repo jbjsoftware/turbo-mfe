@@ -6,10 +6,9 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen';
 import { RootProvider } from './providers/root-provider';
 import {
-  loadAllRemoteRoutes,
-  createDynamicRouteTree,
+  createVirtualRemoteRouteTree,
   type RemoteManifest,
-} from './utils/dynamic-routes';
+} from './utils/virtual-remote-routes';
 import { testAllRemotes } from './utils/test-remote-connection';
 
 // Load remote manifest
@@ -47,11 +46,11 @@ async function initializeApp() {
     // Test remote connections
     await testAllRemotes(remoteManifest);
 
-    // Load all remote routes
-    const remoteRoutes = await loadAllRemoteRoutes(remoteManifest);
-
-    // Create dynamic route tree with remote routes
-    const dynamicRouteTree = createDynamicRouteTree(routeTree, remoteRoutes);
+    // Create virtual remote route tree with proper mounting
+    const dynamicRouteTree = await createVirtualRemoteRouteTree(
+      routeTree,
+      remoteManifest,
+    );
 
     // Create router with dynamic routes
     const router = createRouter({ routeTree: dynamicRouteTree });

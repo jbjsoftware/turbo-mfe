@@ -333,21 +333,21 @@ function wrapRemoteRoute(
 ): any {
   console.log(`🎁 Wrapping remote route tree for ${remoteName} at ${basePath}`);
 
-  // Create a wrapper route that will contain all the remote routes
-  // This wrapper should render the remote's root layout component if available
+  // Use the remote's root route as the wrapper, but change its path
   const remoteLayoutComponent = remoteRouteTree.options?.component;
 
   const wrapperRoute = createRoute({
     getParentRoute: () => undefined as any, // Will be set when added to host tree
     path: basePath,
-    component: () => {
-      // If the remote has a root layout component, use it
-      if (remoteLayoutComponent) {
-        return React.createElement(remoteLayoutComponent);
-      }
-      // Otherwise, just render an outlet
-      return React.createElement(Outlet);
-    },
+    // Use the remote's root component directly
+    component: remoteLayoutComponent,
+    // Copy other options from the remote root route
+    loader: remoteRouteTree.options?.loader,
+    beforeLoad: remoteRouteTree.options?.beforeLoad,
+    errorComponent: remoteRouteTree.options?.errorComponent,
+    pendingComponent: remoteRouteTree.options?.pendingComponent,
+    notFoundComponent: remoteRouteTree.options?.notFoundComponent,
+    validateSearch: remoteRouteTree.options?.validateSearch,
   });
 
   // Check for children in different possible locations
@@ -382,20 +382,33 @@ function wrapRemoteRoute(
         // Special handling for root route (/) - make it the index route of the wrapper
         if (routePath === '/' || routeId === '/') {
           // Create an index route that renders the dashboard's root component
-          const indexRoute = childRoute.update({
+          const indexRoute = createRoute({
             getParentRoute: () => wrapperRoute,
             path: '/', // Index route path
-            id: undefined, // Let TanStack Router auto-generate
-            component: childRoute.options?.component, // Ensure component is preserved
+            component: childRoute.options?.component || childRoute.component,
+            loader: childRoute.options?.loader || childRoute.loader,
+            beforeLoad: childRoute.options?.beforeLoad || childRoute.beforeLoad,
+            errorComponent: childRoute.options?.errorComponent,
+            pendingComponent: childRoute.options?.pendingComponent,
+            notFoundComponent: childRoute.options?.notFoundComponent,
+            validateSearch: childRoute.options?.validateSearch,
+            // Note: Explicitly NOT copying id, path, or getParentRoute from options
           });
 
           remappedChildren['index'] = indexRoute;
         } else {
-          // For non-root routes, create them as child routes
-          const wrappedChildRoute = childRoute.update({
+          // For non-root routes, create them as child routes with proper path context
+          const wrappedChildRoute = createRoute({
             getParentRoute: () => wrapperRoute,
             path: routePath,
-            id: undefined, // Let TanStack Router auto-generate
+            component: childRoute.options?.component || childRoute.component,
+            loader: childRoute.options?.loader || childRoute.loader,
+            beforeLoad: childRoute.options?.beforeLoad || childRoute.beforeLoad,
+            errorComponent: childRoute.options?.errorComponent,
+            pendingComponent: childRoute.options?.pendingComponent,
+            notFoundComponent: childRoute.options?.notFoundComponent,
+            validateSearch: childRoute.options?.validateSearch,
+            // Note: Explicitly NOT copying id, path, or getParentRoute from options
           });
 
           // Use the path as the key, removing leading slash for cleaner keys
@@ -417,9 +430,17 @@ function wrapRemoteRoute(
         });
 
         // Create a new route that inherits from the child but with updated parent
-        const wrappedChildRoute = childRoute.update({
+        const wrappedChildRoute = createRoute({
           getParentRoute: () => wrapperRoute,
           path: childRoute.path,
+          component: childRoute.options?.component || childRoute.component,
+          loader: childRoute.options?.loader || childRoute.loader,
+          beforeLoad: childRoute.options?.beforeLoad || childRoute.beforeLoad,
+          errorComponent: childRoute.options?.errorComponent,
+          pendingComponent: childRoute.options?.pendingComponent,
+          notFoundComponent: childRoute.options?.notFoundComponent,
+          validateSearch: childRoute.options?.validateSearch,
+          // Note: Explicitly NOT copying id, path, or getParentRoute from options
         });
 
         remappedChildren[key] = wrappedChildRoute;
@@ -427,7 +448,7 @@ function wrapRemoteRoute(
     }
 
     // Add the remapped children to the wrapper route
-    wrapperRoute._addFileChildren(remappedChildren);
+    wrapperRoute.addChildren(Object.values(remappedChildren));
   } else {
     console.log(
       'No children found in remote route tree, creating a simple wrapper',
@@ -459,7 +480,7 @@ function wrapRemoteRoute(
       component: indexComponent,
     });
 
-    wrapperRoute._addFileChildren({ index: indexRoute });
+    wrapperRoute.addChildren([indexRoute]);
   }
 
   console.log('Wrapped route tree:', wrapperRoute);

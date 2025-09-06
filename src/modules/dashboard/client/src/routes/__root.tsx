@@ -15,8 +15,7 @@ function Layout() {
   const navigate = useNavigate();
 
   const handleTabChange = (value: string) => {
-    // Use relative navigation - should work within the current route context
-    navigate({ to: `${value}` });
+    navigate({ to: `/${value}` });
   };
 
   return (
