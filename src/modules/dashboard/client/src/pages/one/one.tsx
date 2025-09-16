@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { GaugeChart } from '@/components/gauge-chart';
+import { Card } from '@repo/ui/components/ui/card';
 import { useLoaderData } from 'react-router';
 
 interface OneLoaderData {
@@ -7,6 +10,19 @@ interface OneLoaderData {
 
 const One = () => {
   const data = useLoaderData() as OneLoaderData;
+  const [gaugeValue, setGaugeValue] = useState(50);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGaugeValue((prev) => {
+        const change = (Math.random() - 0.5) * 20;
+        const newValue = prev + change;
+        return Math.max(0, Math.min(100, newValue));
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="p-6">
@@ -18,6 +34,8 @@ const One = () => {
       <div className="mt-4">
         <p className="text-gray-600">This data was loaded by the route's loader function using React Router's Data Mode!</p>
       </div>
+
+      <GaugeChart value={gaugeValue} label="CPU Usage" />
     </div>
   );
 };
